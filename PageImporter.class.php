@@ -25,6 +25,7 @@ class PageImporter {
 	public function __construct ( $pagesFile, $pagesFileRoot ) {
 		$this->pagesFile = $pagesFile;
 		$this->pagesFileRoot = $pagesFileRoot;
+		$this->dryRun = false;
 	}
 
 	// like:
@@ -50,7 +51,7 @@ class PageImporter {
 
 			if ( trim( $filePageContent ) !== trim( $wikiPageText )  ) {
 
-				if ( $dryRun ) {
+				if ( $this->dryRun ) {
 					$output .= "$pageTitleText would be changed.\n";
 					// @todo: show diff?
 				}
@@ -91,7 +92,7 @@ class PageImporter {
 
 			if ( trim( $filePageContent ) !== trim( $wikiPageText )  ) {
 
-				if ( $dryRun ) {
+				if ( $this->dryRun ) {
 					$output .= "$pageTitleText would be changed.\n";
 					// @todo: show diff?
 				}
