@@ -30,4 +30,8 @@ $GLOBALS['wgExtensionCredits']['semantic'][] = array(
 $GLOBALS['wgMessagesDirs']['PageImporter'] = __DIR__ . '/i18n';
 
 // Autoload setup class (location of parser function definitions)
-$GLOBALS['wgAutoloadClasses']['PageImporter'] = __DIR__ . '/PageImporter.class.php';
+// $GLOBALS['wgAutoloadClasses']['PageImporter'] = __DIR__ . '/PageImporter.class.php';
+
+// PageImporter needs to be loaded immediately so other extensions can use the
+// PageImporter::registerPageList() static method
+require_once __DIR__ . '/PageImporter.class.php';
