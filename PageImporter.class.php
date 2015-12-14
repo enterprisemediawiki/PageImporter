@@ -41,7 +41,7 @@ class PageImporter {
 	 * Register a list of pages to be imported
 	 *
 	 * @param string $groupName an identifying string for a group of pages
-	 * @param string $listFile the path to the JSON file defining the pages to be imported
+	 * @param string $listFile the path to the file defining the pages to be imported
 	 * @param string $root the path to the root of the files
 	 * @param string $comment comment to be added to each file import
 	 * @return null
@@ -78,12 +78,15 @@ class PageImporter {
 
 		foreach( $groupsToImport as $groupName => $groupInfo ) {
 
-			$outputHandler->output( "\nStarting import from $groupName.\n\n" );
+			$outputHandler->showOutput( "\nStarting import from $groupName.\n\n" );
 
 			$root = $groupInfo["root"];
-			$editSummary = $groupInfo["editSummary"];
+			$comment = $groupInfo["comment"];
 
-			$pages = json_decode( file_get_contents( $groupInfo["listFile"] ) );
+			$pages = $this->getArrayFromFile( $groupInfo["listFile"] );
+
+			global $wgUser;
+			$wgUser = User::newFromName( 'Maintenance script' );
 
 			foreach( $pages as $pageTitleText => $filePath ) {
 
@@ -101,19 +104,19 @@ class PageImporter {
 				if ( trim( $filePageContent ) !== trim( $wikiPageText )  ) {
 
 					if ( $this->dryRun ) {
-						$outputHandler->output( "$pageTitleText would be changed.\n" );
+						$outputHandler->showOutput( "$pageTitleText would be changed.\n" );
 						// @todo: show diff?
 					}
 					else {
-						$outputHandler->output( "$pageTitleText changed.\n" );
+						$outputHandler->showOutput( "$pageTitleText changed.\n" );
 						$wikiPage->doEditContent(
 							new WikitextContent( $filePageContent ),
-							$editSummary
+							$comment
 						);
 					}
 				}
 				else {
-					$outputHandler->output( "No change for $pageTitleText\n" );
+					$outputHandler->showOutput( "No change for $pageTitleText\n" );
 				}
 			}
 
@@ -144,12 +147,12 @@ class PageImporter {
 
 		foreach( $groupsToImport as $groupName => $groupInfo ) {
 
-			$outputHandler->output( "\nStarting export from $groupName.\n\n" );
+			$outputHandler->showOutput( "\nStarting export from $groupName.\n\n" );
 
 			$root = $groupInfo["root"];
-			$editSummary = $groupInfo["editSummary"];
+			$comment = $groupInfo["comment"];
 
-			$pages = json_decode( file_get_contents( $groupInfo["listFile"] ) );
+			$pages = $this->getArrayFromFile( $groupInfo["listFile"] );
 
 			foreach( $pages as $pageTitleText => $filePath ) {
 
@@ -167,16 +170,16 @@ class PageImporter {
 				if ( trim( $filePageContent ) !== trim( $wikiPageText )  ) {
 
 					if ( $this->dryRun ) {
-						$outputHandler->output( "$pageTitleText would be exported.\n" );
+						$outputHandler->showOutput( "$pageTitleText would be exported.\n" );
 						// @todo: show diff?
 					}
 					else {
-						$outputHandler->output( "$pageTitleText exported.\n" );
+						$outputHandler->showOutput( "$pageTitleText exported.\n" );
 						file_put_contents( $root . "/$filePath" , $wikiPageText );
 					}
 				}
 				else {
-					$outputHandler->output( "No change for $pageTitleText\n" );
+					$outputHandler->showOutput( "No change for $pageTitleText\n" );
 				}
 			}
 
@@ -189,8 +192,19 @@ class PageImporter {
 	 * @param string $varName add description
 	 * @return null
 	 */
-	public function output ( $output ) {
+	public function showOutput ( $output ) {
 		echo $output;
+	}
+
+	/**
+	 * Function used to extract a PHP array from a file
+	 *
+	 * @param string $filepath path to file containing a variable called $pages
+	 * @return array
+	 */
+	public function getArrayFromFile ( $filepath ) {
+		require $filepath;
+		return $pages; // return $pages variable defined in file
 	}
 
 }
