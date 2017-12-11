@@ -8,27 +8,30 @@ Extensions can
 ```php
 PageImporter::registerPageList(
 	"MyExtension", // a unique name, generally your extension's name
-	__DIR__ . "/pages.json", // a JSON file that maps MediaWiki wikitext files to wiki pages
-	__DIR__ . "/pages", // the directory where all paths in your JSON file are based from
+	__DIR__ . "/pages.php", // a php file that maps MediaWiki wikitext files to wiki pages
+	__DIR__ . "/pages", // the directory where all paths in your pages.php file are based from
 	"Updated with content from Extension:MyExtension version " . MY_EXTENSION_VERSION_NUMBER // edit summary
 );
 ```
 
-The JSON file should be in the following format. Essentially you need to map page names with file paths. The file paths are based from the directory mentioned above.
+The PHP file should be in the following format. Essentially you need to map page names with file paths. The file paths are based from the directory mentioned above.
 
-```json
+```php
 {
-	"Template:Meeting": "Template/Meeting.mediawiki",
-	"Template:Meeting Minutes": "Template/Meeting Minutes.mediawiki",
+<?php
+$pages = array(
+	"Template:Meeting" => "Template/Meeting.mediawiki",
+	"Template:Meeting minutes" => "Template/Meeting minutes.mediawiki",
 
-	"Form:Meeting": "Form/Meeting.mediawiki",
-	"Form:Meeting Minutes": "Form/Meeting Minutes.mediawiki",
+	"Form:Meeting" => "Form/Meeting.mediawiki",
+	"Form:Meeting Minutes" => "Form/Meeting Minutes.mediawiki",
 
-	"Category:Meeting": "Category/Meeting.mediawiki",
-	"Category:Meeting Minutes": "Category/Meeting Minutes.mediawiki",
+	"Category:Meeting" => "Category/Meeting.mediawiki",
+	"Category:Meeting Minutes" => "Category/Meeting Minutes.mediawiki",
 
-	"Property:Start time": "Property/Start time.mediawiki",
-	"Property:Synopsis": "Property/Synopsis.mediawiki"
+	"Property:Start time" => "Property/Start time.mediawiki",
+	"Property:Synopsis" => "Property/Synopsis.mediawiki",
+);
 }
 ```
 
@@ -37,7 +40,7 @@ The directory structure in this example looks like:
 ```
 MyExtension
 	MyExtension.php
-	pages.json
+	pages.php
 	pages
 		Template
 			Meeting.mediawiki
