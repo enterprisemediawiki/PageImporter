@@ -14,9 +14,9 @@ ls $BASE_PATH
 echo "mw install path:"
 ls $MW_INSTALL_PATH
 
-cd $MW_INSTALL_PATH/extensions
 cp -r $BASE_PATH $MW_INSTALL_PATH/extensions/PageImporter
 
-echo
-echo "require_once \"$MW_INSTALL_PATH/extensions/PageImporter/PageImporter.php\";"
-echo
+cd $MW_INSTALL_PATH
+echo "" >> LocalSettings.php
+echo "require_once \"$MW_INSTALL_PATH/extensions/PageImporter/PageImporter.php\";" >> LocalSettings.php
+echo "" >> LocalSettings.php
