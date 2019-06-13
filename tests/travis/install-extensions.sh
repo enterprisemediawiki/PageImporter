@@ -20,3 +20,8 @@ cd $MW_INSTALL_PATH
 echo "" >> LocalSettings.php
 echo "require_once \"$MW_INSTALL_PATH/extensions/PageImporter/PageImporter.php\";" >> LocalSettings.php
 echo "" >> LocalSettings.php
+
+cp -r $MW_INSTALL_PATH/extensions/PageImporter/tests/ExampleExtension $MW_INSTALL_PATH/extensions/ExampleExtension
+echo "" >> LocalSettings.php
+echo "require_once \"$MW_INSTALL_PATH/extensions/ExampleExtension/ExampleExtension.php\";" >> LocalSettings.php
+echo "" >> LocalSettings.php
