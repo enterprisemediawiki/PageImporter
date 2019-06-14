@@ -18,7 +18,7 @@ if ( ! defined( 'MEDIAWIKI' ) ) {
 	die( 'PageImporter extension' );
 }
 
-$GLOBALS['wgExtensionCredits']['semantic'][] = array(
+$GLOBALS['wgExtensionCredits']['other'][] = array(
 	'path'           => __FILE__,
 	'name'           => 'Page Importer',
 	'url'            => 'http://github.com/enterprisemediawiki/PageImporter',
