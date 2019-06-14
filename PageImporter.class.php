@@ -25,7 +25,7 @@ class PageImporter {
 	/**
 	 * @var array
 	 */
-	protected static $pageLists = array();
+	protected static $pageLists = [];
 
 	/**
 	 * Add description
@@ -35,20 +35,23 @@ class PageImporter {
 	 */
 	public function __construct ( $dryRun=false ) {
 		$this->dryRun = $dryRun;
+		$pageLists = [];
+		Hooks::run( 'PageImporterRegisterPageLists', array( &$pageLists ) );
+		self::$pageLists = array_merge( self::$pageLists, $pageLists );
 	}
 
 	/**
 	 * Register a list of pages to be imported
 	 *
 	 * @param string $groupName an identifying string for a group of pages
-	 * @param string $listFile the path to the file defining the pages to be imported
+	 * @param string $pages the path to the file defining the pages to be imported
 	 * @param string $root the path to the root of the files
 	 * @param string $comment comment to be added to each file import
 	 * @return null
 	 */
-	public static function registerPageList ( $groupName, $listFile, $root, $comment ) {
+	public static function registerPageList ( $groupName, $pages, $root, $comment ) {
 		self::$pageLists[$groupName] = array(
-			"listFile" => $listFile,
+			"pages" => $pages,
 			"root" => $root,
 			"comment" => $comment
 		);
@@ -66,14 +69,17 @@ class PageImporter {
 			$outputHandler = $this;
 		}
 
+		$pageLists = self::$pageLists;
+		Hooks::run( 'PageImporterBeforeImportOrExport', array( &$pageLists ) );
+
 		$groupsToImport = array();
 		if ( $limitToGroups ) {
 			foreach( $limitToGroups as $group ) {
-				$groupsToImport[$group] = self::$pageLists[$group];
+				$groupsToImport[$group] = $pageLists[$group];
 			}
 		}
 		else {
-			$groupsToImport = self::$pageLists;
+			$groupsToImport = $pageLists;
 		}
 
 		foreach( $groupsToImport as $groupName => $groupInfo ) {
@@ -82,8 +88,7 @@ class PageImporter {
 
 			$root = $groupInfo["root"];
 			$comment = $groupInfo["comment"];
-
-			$pages = $this->getArrayFromFile( $groupInfo["listFile"] );
+			$pages = $this->getPages( $groupInfo['pages'] );
 
 			global $wgUser;
 			$wgUser = User::newFromName( 'Maintenance script' );
@@ -135,14 +140,17 @@ class PageImporter {
 			$outputHandler = $this;
 		}
 
+		$pageLists = self::$pageLists;
+		Hooks::run( 'PageImporterBeforeImportOrExport', array( &$pageLists ) );
+
 		$groupsToImport = array();
 		if ( $limitToGroups ) {
 			foreach( $limitToGroups as $group ) {
-				$groupsToImport[$group] = self::$pageLists[$group];
+				$groupsToImport[$group] = $pageLists[$group];
 			}
 		}
 		else {
-			$groupsToImport = self::$pageLists;
+			$groupsToImport = $pageLists;
 		}
 
 		foreach( $groupsToImport as $groupName => $groupInfo ) {
@@ -151,8 +159,7 @@ class PageImporter {
 
 			$root = $groupInfo["root"];
 			$comment = $groupInfo["comment"];
-
-			$pages = $this->getArrayFromFile( $groupInfo["listFile"] );
+			$pages = $this->getPages( $groupInfo['pages'] );
 
 			foreach( $pages as $pageTitleText => $filePath ) {
 
@@ -197,14 +204,25 @@ class PageImporter {
 	}
 
 	/**
-	 * Function used to extract a PHP array from a file
+	 * Function used to extract a PHP array from a file or just return an array
+	 * if an array passed in.
 	 *
-	 * @param string $filepath path to file containing a variable called $pages
+	 * @param string|array $filepathOrArray is either a file path to file
+	 *                     containing a variable called '$pages' or is an array
+	 *                     of pages.
 	 * @return array
 	 */
-	public function getArrayFromFile ( $filepath ) {
-		require $filepath;
-		return $pages; // return $pages variable defined in file
+	public function getPages ( $filepathOrArray ) {
+
+		if ( is_string( $filepathOrArray ) ) {
+			// if string, it's a path to a file containing the pages
+			require $filepathOrArray;
+			return $pages; // return $pages variable defined in file
+		}
+		else {
+			// if not a string, assume array of pages
+			return $filepathOrArray;
+		}
 	}
 
 }

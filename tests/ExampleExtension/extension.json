@@ -1,0 +1,16 @@
+{
+	"name": "ExampleExtension",
+	"version": "0.0.0",
+	"author": [
+		"[https://www.mediawiki.org/wiki/User:Jamesmontalvo3 James Montalvo]"
+	],
+	"url": "http://github.com/enterprisemediawiki",
+	"descriptionmsg": "example-extension-desc",
+	"type": "other",
+	"AutoloadClasses": {
+		"ExampleExtension": "ExampleExtension.class.php"
+	},
+	"Hooks": {
+		"PageImporterRegisterPageLists": "ExampleExtension::onPageImporterRegisterPageLists"
+	}
+}
