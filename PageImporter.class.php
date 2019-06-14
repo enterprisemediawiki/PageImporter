@@ -91,7 +91,7 @@ class PageImporter { // phpcs:ignore MediaWiki.Files.ClassMatchesFilename.NotMat
 			$pages = $this->getPages( $groupInfo['pages'] );
 
 			global $wgUser;
-			$wgUser = User::newFromName( 'Maintenance script' );
+			$wgUser = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 
 			foreach ( $pages as $pageTitleText => $filePath ) {
 
