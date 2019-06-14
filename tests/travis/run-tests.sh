@@ -24,9 +24,9 @@ fn_compare_file_with_page () {
 	FILE_VALUE=$(cat $MW_INSTALL_PATH/extensions/ExampleExtension/ImportFiles/$FILE_NAME)
 
 	if [ "$PAGE_VALUE" = "$FILE_VALUE" ]; then
-		echo "$GREEN$PAGE_NAME matches $FILE_NAME$NC"
+		echo -e "$GREEN$PAGE_NAME matches $FILE_NAME$NC"
 	else
-		echo "$RED$PAGE_NAME does not match $FILE_NAME$NC" && false
+		echo -e "$RED$PAGE_NAME does not match $FILE_NAME$NC" && false
 	fi
 }
 
