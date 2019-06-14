@@ -3,7 +3,6 @@
 class ExampleExtension {
 
 	public static function onPageImporterRegisterPageLists( array &$pageLists ) {
-
 		// The array key (here 'MyExtension') should be a unique name, generally
 		// your extension's name
 		$pageLists['ExampleExtension'] = [
@@ -20,7 +19,6 @@ class ExampleExtension {
 			// edit summary used when PageImporter edits pages
 			"comment" => "Updated with content from Extension:ExampleExtension version 1.0.0"
 		];
-
 	}
 
 }

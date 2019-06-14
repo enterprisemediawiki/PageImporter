@@ -4,14 +4,14 @@ if ( ! defined( 'MEDIAWIKI' ) ) {
 	die( 'MeetingMinutes extension' );
 }
 
-$GLOBALS['wgExtensionCredits']['other'][] = array(
+$GLOBALS['wgExtensionCredits']['other'][] = [
 	'path'           => __FILE__,
 	'name'           => 'Example Extension',
 	'url'            => 'http://github.com/enterprisemediawiki',
 	'author'         => 'James Montalvo',
 	'descriptionmsg' => 'example-extension-desc',
 	'version'        => '0.0.0'
-);
+];
 
 $GLOBALS['wgMessagesDirs']['ExampleExtension'] = __DIR__ . '/i18n';
 

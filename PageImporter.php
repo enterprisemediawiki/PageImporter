@@ -10,7 +10,7 @@
  * @addtogroup Extensions
  * @author James Montalvo
  * @copyright © 2014 by James Montalvo
- * @licence GNU GPL v3+
+ * @license GNU GPL v3+
  */
 
 # Not a valid entry point, skip unless MEDIAWIKI is defined
@@ -18,14 +18,14 @@ if ( ! defined( 'MEDIAWIKI' ) ) {
 	die( 'PageImporter extension' );
 }
 
-$GLOBALS['wgExtensionCredits']['other'][] = array(
+$GLOBALS['wgExtensionCredits']['other'][] = [
 	'path'           => __FILE__,
 	'name'           => 'Page Importer',
 	'url'            => 'http://github.com/enterprisemediawiki/PageImporter',
 	'author'         => 'James Montalvo',
 	'descriptionmsg' => 'pageimporter-desc',
 	'version'        => '0.1.0'
-);
+];
 
 $GLOBALS['wgMessagesDirs']['PageImporter'] = __DIR__ . '/i18n';
 

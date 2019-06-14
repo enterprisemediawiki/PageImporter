@@ -2,6 +2,9 @@
 <ruleset name="MediaWiki">
 	<file>.</file>
 	<rule ref="./vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
+		<!-- Exclude this for testing on Windows -->
+		<!-- <exclude name="Generic.Files.LineEndings.InvalidEOLChar" /> -->
+
 		<!-- Allow type-hinting for scalars (e.g. int $myInt, string $myString) -->
 		<exclude name="MediaWiki.PHP70Features.ScalarTypeHintUsage.Found" />
 		<exclude name="MediaWiki.PHP70Features.ScalarTypeHintUsage.ReturnTypeFound" />
