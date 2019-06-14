@@ -10,15 +10,17 @@ matrix:
   include:
     - env: DB=mysql; MW=REL1_27
       php: 7.1
-    # - env: DB=mysql; MW=REL1_31
-    #   php: 5.6
-    # - env: DB=mysql; MW=REL1_31
-    #   php: 7.1
-    # - env: DB=mysql; MW=REL1_31
-    #   php: 7.2
-    # - env: DB=mysql; MW=REL1_32
-    #   php: 7.1
+    - env: DB=mysql; MW=REL1_31
+      php: 5.6
+    - env: DB=mysql; MW=REL1_31
+      php: 7.1
+    - env: DB=mysql; MW=REL1_31
+      php: 7.2
+    - env: DB=mysql; MW=REL1_32
+      php: 7.1
     - env: DB=mysql; MW=REL1_33
+      php: 7.1
+    - env: DB=mysql; MW=master
       php: 7.1
 
 install:
