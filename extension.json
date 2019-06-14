@@ -1,0 +1,18 @@
+{
+	"name": "PageImporter",
+	"version": "0.1.0",
+	"author": [
+		"[https://www.mediawiki.org/wiki/User:Jamesmontalvo3 James Montalvo]"
+	],
+	"url": "http://github.com/enterprisemediawiki/PageImporter",
+	"descriptionmsg": "pageimporter-desc",
+	"type": "other",
+	"AutoloadClasses": {
+		"PageImporter": "PageImporter.class.php"
+	},
+	"MessagesDirs": {
+		"Wiretap": [
+			"i18n"
+		]
+	}
+}

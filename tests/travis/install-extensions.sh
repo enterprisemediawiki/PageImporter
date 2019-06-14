@@ -22,7 +22,11 @@ echo "" >> LocalSettings.php
 echo "\$wgShowExceptionDetails = true;" >> LocalSettings.php
 
 echo "" >> LocalSettings.php
-echo "require_once \"$MW_INSTALL_PATH/extensions/PageImporter/PageImporter.php\";" >> LocalSettings.php
+if [ "$LOAD_TYPE" = "extension.json" ]; then
+	echo "wfLoadExtension('PageImporter');" >> LocalSettings.php
+else
+	echo "require_once \"$MW_INSTALL_PATH/extensions/PageImporter/PageImporter.php\";" >> LocalSettings.php
+fi
 echo "" >> LocalSettings.php
 
 cp -r $MW_INSTALL_PATH/extensions/PageImporter/tests/ExampleExtension $MW_INSTALL_PATH/extensions/ExampleExtension
