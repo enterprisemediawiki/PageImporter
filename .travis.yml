@@ -20,6 +20,11 @@ matrix:
       php: 7.1
 
 install:
+  - composer install
+
+  # Do this early, not in 'script' section, to kill the build before wasting time
+  - composer test
+
   - bash ./tests/travis/install-mediawiki.sh
   - bash ./tests/travis/install-extensions.sh
 
