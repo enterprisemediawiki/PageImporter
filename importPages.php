@@ -29,8 +29,7 @@
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../..';
 require_once $basePath . '/maintenance/Maintenance.php';
 
-
-class PageImporterImportPages extends Maintenance {
+class PageImporterImportPages extends Maintenance { // phpcs:ignore MediaWiki.Files.ClassMatchesFilename.NotMatch
 
 	public function __construct() {
 		parent::__construct();
@@ -45,17 +44,14 @@ class PageImporterImportPages extends Maintenance {
 			false, false );
 	}
 
- 	// initiates or updates extensions
 	public function execute() {
-
 		$groupsString = $this->getOption( 'limit-to-groups' );
 		if ( $groupsString ) {
 			$limitToGroups = explode( ',', $groupsString );
-			foreach( $limitToGroups as $i => $g ) {
+			foreach ( $limitToGroups as $i => $g ) {
 				$limitToGroups[$i] = trim( $g );
 			}
-		}
-		else {
+		} else {
 			$limitToGroups = false;
 		}
 
@@ -67,20 +63,23 @@ class PageImporterImportPages extends Maintenance {
 			$this->output( "\n## Finished exporting pages.\n" );
 		}
 		// import pages
-		else {
+ else {
 			$pageImporter->import( $this, $limitToGroups );
 			$this->output( "\n## Finished importing pages.\n" );
-		}
-
+	}
 	}
 
-	// just a wrapper on output() because output() is protected and the PageImporter
-	// class needs to call it directly
-	public function showOutput ( $output ) {
+	/**
+	 * just a wrapper on output() because output() is protected and the
+	 * PageImporter class needs to call it directly.
+	 *
+	 * @param string $output Text to print
+	 */
+	public function showOutput( $output ) {
 		$this->output( $output );
 	}
 
 }
 
 $maintClass = "PageImporterImportPages";
-require_once( DO_MAINTENANCE );
+require_once RUN_MAINTENANCE_IF_MAIN;

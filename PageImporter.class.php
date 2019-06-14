@@ -20,7 +20,7 @@
  * @author James Montalvo
  */
 
-class PageImporter {
+class PageImporter { // phpcs:ignore MediaWiki.Files.ClassMatchesFilename.NotMatch
 
 	/**
 	 * @var array
@@ -30,13 +30,13 @@ class PageImporter {
 	/**
 	 * Add description
 	 *
-	 * @param string $varName add description
+	 * @param string $dryRun add description
 	 * @return null
 	 */
-	public function __construct ( $dryRun=false ) {
+	public function __construct( $dryRun = false ) {
 		$this->dryRun = $dryRun;
 		$pageLists = [];
-		Hooks::run( 'PageImporterRegisterPageLists', array( &$pageLists ) );
+		Hooks::run( 'PageImporterRegisterPageLists', [ &$pageLists ] );
 		self::$pageLists = array_merge( self::$pageLists, $pageLists );
 	}
 
@@ -49,40 +49,40 @@ class PageImporter {
 	 * @param string $comment comment to be added to each file import
 	 * @return null
 	 */
-	public static function registerPageList ( $groupName, $pages, $root, $comment ) {
-		self::$pageLists[$groupName] = array(
+	public static function registerPageList( $groupName, $pages, $root, $comment ) {
+		self::$pageLists[$groupName] = [
 			"pages" => $pages,
 			"root" => $root,
 			"comment" => $comment
-		);
+		];
 	}
 
 	/**
-	 * Add description
+	 * Perform import of pages from files
 	 *
-	 * @param string $varName add description
+	 * @param mixed $outputHandler How to output text. Use maintenance->output()
+	 *              if possible.
+	 * @param string $limitToGroups Which groups of pages to import
 	 * @return null
 	 */
-	public function import ( $outputHandler=false, $limitToGroups=false ) {
-
+	public function import( $outputHandler = false, $limitToGroups = false ) {
 		if ( ! $outputHandler ) {
 			$outputHandler = $this;
 		}
 
 		$pageLists = self::$pageLists;
-		Hooks::run( 'PageImporterBeforeImportOrExport', array( &$pageLists ) );
+		Hooks::run( 'PageImporterBeforeImportOrExport', [ &$pageLists ] );
 
-		$groupsToImport = array();
+		$groupsToImport = [];
 		if ( $limitToGroups ) {
-			foreach( $limitToGroups as $group ) {
+			foreach ( $limitToGroups as $group ) {
 				$groupsToImport[$group] = $pageLists[$group];
 			}
-		}
-		else {
+		} else {
 			$groupsToImport = $pageLists;
 		}
 
-		foreach( $groupsToImport as $groupName => $groupInfo ) {
+		foreach ( $groupsToImport as $groupName => $groupInfo ) {
 
 			$outputHandler->showOutput( "\nStarting import from $groupName.\n\n" );
 
@@ -93,34 +93,31 @@ class PageImporter {
 			global $wgUser;
 			$wgUser = User::newFromName( 'Maintenance script' );
 
-			foreach( $pages as $pageTitleText => $filePath ) {
+			foreach ( $pages as $pageTitleText => $filePath ) {
 
 				$wikiPage = WikiPage::factory( Title::newFromText( $pageTitleText ) );
 				$wikiPageContent = $wikiPage->getContent();
 				if ( $wikiPageContent ) {
 					$wikiPageText = $wikiPageContent->getNativeData();
-				}
-				else {
+				} else {
 					$wikiPageText = '';
 				}
 
 				$filePageContent = file_get_contents( $root . "/$filePath" );
 
-				if ( trim( $filePageContent ) !== trim( $wikiPageText )  ) {
+				if ( trim( $filePageContent ) !== trim( $wikiPageText ) ) {
 
 					if ( $this->dryRun ) {
 						$outputHandler->showOutput( "$pageTitleText would be changed.\n" );
 						// @todo: show diff?
-					}
-					else {
+					} else {
 						$outputHandler->showOutput( "$pageTitleText changed.\n" );
 						$wikiPage->doEditContent(
 							new WikitextContent( $filePageContent ),
 							$comment
 						);
 					}
-				}
-				else {
+				} else {
 					$outputHandler->showOutput( "No change for $pageTitleText\n" );
 				}
 			}
@@ -129,31 +126,31 @@ class PageImporter {
 	}
 
 	/**
-	 * Add description
+	 * Take pages on wiki and push their contents to files within the extension
 	 *
-	 * @param string $varName add description
+	 * @param mixed $outputHandler How to output text. Use maintenance->output()
+	 *              if possible.
+	 * @param string $limitToGroups Which groups of pages to import
 	 * @return null
 	 */
-	public function exportPagesToFiles ( $outputHandler=false, $limitToGroups=false ) {
-
+	public function exportPagesToFiles( $outputHandler = false, $limitToGroups = false ) {
 		if ( ! $outputHandler ) {
 			$outputHandler = $this;
 		}
 
 		$pageLists = self::$pageLists;
-		Hooks::run( 'PageImporterBeforeImportOrExport', array( &$pageLists ) );
+		Hooks::run( 'PageImporterBeforeImportOrExport', [ &$pageLists ] );
 
-		$groupsToImport = array();
+		$groupsToImport = [];
 		if ( $limitToGroups ) {
-			foreach( $limitToGroups as $group ) {
+			foreach ( $limitToGroups as $group ) {
 				$groupsToImport[$group] = $pageLists[$group];
 			}
-		}
-		else {
+		} else {
 			$groupsToImport = $pageLists;
 		}
 
-		foreach( $groupsToImport as $groupName => $groupInfo ) {
+		foreach ( $groupsToImport as $groupName => $groupInfo ) {
 
 			$outputHandler->showOutput( "\nStarting export from $groupName.\n\n" );
 
@@ -161,31 +158,28 @@ class PageImporter {
 			$comment = $groupInfo["comment"];
 			$pages = $this->getPages( $groupInfo['pages'] );
 
-			foreach( $pages as $pageTitleText => $filePath ) {
+			foreach ( $pages as $pageTitleText => $filePath ) {
 
 				$wikiPage = WikiPage::factory( Title::newFromText( $pageTitleText ) );
 				$wikiPageContent = $wikiPage->getContent();
 				if ( $wikiPageContent ) {
 					$wikiPageText = $wikiPageContent->getNativeData();
-				}
-				else {
+				} else {
 					$wikiPageText = '';
 				}
 
 				$filePageContent = file_get_contents( $root . "/$filePath" );
 
-				if ( trim( $filePageContent ) !== trim( $wikiPageText )  ) {
+				if ( trim( $filePageContent ) !== trim( $wikiPageText ) ) {
 
 					if ( $this->dryRun ) {
 						$outputHandler->showOutput( "$pageTitleText would be exported.\n" );
 						// @todo: show diff?
-					}
-					else {
+					} else {
 						$outputHandler->showOutput( "$pageTitleText exported.\n" );
-						file_put_contents( $root . "/$filePath" , $wikiPageText );
+						file_put_contents( $root . "/$filePath", $wikiPageText );
 					}
-				}
-				else {
+				} else {
 					$outputHandler->showOutput( "No change for $pageTitleText\n" );
 				}
 			}
@@ -196,10 +190,10 @@ class PageImporter {
 	/**
 	 * Function used if a maintenance class is not provided
 	 *
-	 * @param string $varName add description
+	 * @param string $output Text to output
 	 * @return null
 	 */
-	public function showOutput ( $output ) {
+	public function showOutput( $output ) {
 		echo $output;
 	}
 
@@ -212,14 +206,14 @@ class PageImporter {
 	 *                     of pages.
 	 * @return array
 	 */
-	public function getPages ( $filepathOrArray ) {
-
+	public function getPages( $filepathOrArray ) {
 		if ( is_string( $filepathOrArray ) ) {
 			// if string, it's a path to a file containing the pages
 			require $filepathOrArray;
-			return $pages; // return $pages variable defined in file
-		}
-		else {
+
+			// return $pages variable defined in file
+			return $pages;
+		} else {
 			// if not a string, assume array of pages
 			return $filepathOrArray;
 		}

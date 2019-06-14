@@ -1,0 +1,42 @@
+{
+	"name": "mediawiki/page-importer",
+	"type": "mediawiki-extension",
+	"description": "Extension to provide the ability to have extension-defined pages",
+	"keywords": [
+		"MediaWiki",
+		"Import"
+	],
+	"homepage": "https://github.com/enterprisemediawiki/PageImporter",
+	"license": "GPL-3.0+",
+	"authors": [
+		{
+			"name": "James Montalvo",
+			"homepage": "http://jamesmontalvo3.com",
+			"role": "Author"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/enterprisemediawiki/PageImporter/issues",
+		"source": "https://github.com/enterprisemediawiki/PageImporter"
+	},
+	"require": {
+		"php": ">=5.6.0"
+	},
+	"require-dev": {
+		"jakub-onderka/php-parallel-lint": "1.0.0",
+		"mediawiki/mediawiki-codesniffer": "19.1.0 || 23.0.0",
+		"jakub-onderka/php-console-highlighter": "0.3.2",
+		"mediawiki/minus-x": "0.3.1"
+	},
+	"scripts": {
+		"test": [
+			"parallel-lint . --exclude vendor --exclude node_modules",
+			"phpcs -p -s",
+			"minus-x check ."
+		],
+		"fix": [
+			"phpcbf",
+			"minus-x fix ."
+		]
+	}
+}
