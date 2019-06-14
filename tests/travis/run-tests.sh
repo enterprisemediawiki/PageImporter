@@ -43,8 +43,8 @@ fn_compare_file_with_page "Template:Test" "Template/Test.mediawiki"
 fn_compare_file_with_page "Category:Test_Category" "Category/Test_Category.mediawiki"
 
 # Edit pages
-echo "New template text" | php $MW_INSTALL_PATH/maintenance/edit.php "Template:Test"
-echo "New category text" | php $MW_INSTALL_PATH/maintenance/edit.php "Category:Test_Category"
+echo "New template text" | php $MW_INSTALL_PATH/maintenance/edit.php -u Tester "Template:Test"
+echo "New category text" | php $MW_INSTALL_PATH/maintenance/edit.php -u Tester "Category:Test_Category"
 
 fn_compare_file_with_page "Template:Test" "Template/Test.mediawiki" "no"
 fn_compare_file_with_page "Category:Test_Category" "Category/Test_Category.mediawiki" "no"
