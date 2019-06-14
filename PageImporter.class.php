@@ -58,9 +58,11 @@ class PageImporter { // phpcs:ignore MediaWiki.Files.ClassMatchesFilename.NotMat
 	}
 
 	/**
-	 * Add description
+	 * Perform import of pages from files
 	 *
-	 * @param string $varName add description
+	 * @param mixed $outputHandler How to output text. Use maintenance->output()
+	 *              if possible.
+	 * @param string $limitToGroups Which groups of pages to import
 	 * @return null
 	 */
 	public function import( $outputHandler = false, $limitToGroups = false ) {
@@ -124,9 +126,11 @@ class PageImporter { // phpcs:ignore MediaWiki.Files.ClassMatchesFilename.NotMat
 	}
 
 	/**
-	 * Add description
+	 * Take pages on wiki and push their contents to files within the extension
 	 *
-	 * @param string $varName add description
+	 * @param mixed $outputHandler How to output text. Use maintenance->output()
+	 *              if possible.
+	 * @param string $limitToGroups Which groups of pages to import
 	 * @return null
 	 */
 	public function exportPagesToFiles( $outputHandler = false, $limitToGroups = false ) {
@@ -186,7 +190,7 @@ class PageImporter { // phpcs:ignore MediaWiki.Files.ClassMatchesFilename.NotMat
 	/**
 	 * Function used if a maintenance class is not provided
 	 *
-	 * @param string $varName add description
+	 * @param string $output Text to output
 	 * @return null
 	 */
 	public function showOutput( $output ) {
@@ -206,7 +210,9 @@ class PageImporter { // phpcs:ignore MediaWiki.Files.ClassMatchesFilename.NotMat
 		if ( is_string( $filepathOrArray ) ) {
 			// if string, it's a path to a file containing the pages
 			require $filepathOrArray;
-			return $pages; // return $pages variable defined in file
+
+			// return $pages variable defined in file
+			return $pages;
 		} else {
 			// if not a string, assume array of pages
 			return $filepathOrArray;

@@ -10,7 +10,7 @@
  * @addtogroup Extensions
  * @author James Montalvo
  * @copyright © 2014 by James Montalvo
- * @license GNU GPL v3+
+ * @license GPL-3.0-or-later
  */
 
 # Not a valid entry point, skip unless MEDIAWIKI is defined

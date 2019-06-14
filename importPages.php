@@ -44,7 +44,6 @@ class PageImporterImportPages extends Maintenance { // phpcs:ignore MediaWiki.Fi
 			false, false );
 	}
 
-	// initiates or updates extensions
 	public function execute() {
 		$groupsString = $this->getOption( 'limit-to-groups' );
 		if ( $groupsString ) {
@@ -70,8 +69,12 @@ class PageImporterImportPages extends Maintenance { // phpcs:ignore MediaWiki.Fi
 	}
 	}
 
-	// just a wrapper on output() because output() is protected and the PageImporter
-	// class needs to call it directly
+	/**
+	 * just a wrapper on output() because output() is protected and the
+	 * PageImporter class needs to call it directly.
+	 *
+	 * @param string $output Text to print
+	 */
 	public function showOutput( $output ) {
 		$this->output( $output );
 	}
