@@ -3,7 +3,23 @@ Page Importer
 
 Extension to provide the ability to have extension-defined pages. Extensions can define directories of files which map to wiki pages, and will be synced with the files anytime `php extensions/PageImporter/importPages.php` is run. Additionally, the current state of the wiki's pages (that are tracked by an extension) can be exported to the extension by doing `php extensions/PageImporter/importPages.php --export`.
 
-## Usage
+## Loading in MediaWiki
+
+PageImporter should be loaded using `wfLoadExtension`:
+
+```php
+wfLoadExtension('PageImporter');
+```
+
+It is still possible to load PageImporter with the legacy method, but this is deprecated:
+
+```php
+require_once "$IP/extensions/PageImporter/PageImporter.php";
+```
+
+Either way loads Page Importer into MediaWiki, however *PageImporter* does basically nothing on its own. It is expected to be used by other extensions. See below.
+
+## Usage by extensions
 
 Extensions can register pages to be imported by registering a hook handler to their `extension.json`:
 
