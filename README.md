@@ -1,6 +1,8 @@
 Page Importer
 =============
 
+[![Build Status](https://travis-ci.org/enterprisemediawiki/PageImporter.svg?branch=master)](https://travis-ci.org/enterprisemediawiki/PageImporter)
+
 Extension to provide the ability to have extension-defined pages. Extensions can define directories of files which map to wiki pages, and will be synced with the files anytime `php extensions/PageImporter/importPages.php` is run. Additionally, the current state of the wiki's pages (that are tracked by an extension) can be exported to the extension by doing `php extensions/PageImporter/importPages.php --export`.
 
 ## Loading in MediaWiki
